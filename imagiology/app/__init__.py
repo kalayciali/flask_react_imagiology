@@ -3,11 +3,16 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api
-from app.routes import initialize_routes
+from flask_cors import CORS
+
+import logging
+from logging.handlers import RotatingFileHandler
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
 api = Api()
+cors = CORS()
 
 
 def create_app(config_class=Config):
@@ -18,17 +23,10 @@ def create_app(config_class=Config):
     api.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
-
-    initialize_routes(api)
-
-    from app.errors import bp as errors_bp
-    app.register_blueprint(errors_bp)
+    cors.init_app(app)
 
     from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-
-    from app.main import bp as main_bp
-    app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
     # handling logs
     if not app.debug and not app.testing:
@@ -47,7 +45,12 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Imagiology')
+        print("worked")
 
     return app
+
+# initialize restful api
+# from app.routes import initialize_routes
+# initialize_routes(api)
 
 from app import models

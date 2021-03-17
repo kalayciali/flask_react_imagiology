@@ -5,19 +5,30 @@ from werkzeug.security import (
 )
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    unique_id = db.Column(db.Integer)
-    email = db.Column(db.String(120), index=True, unique=True, required=True)
-    password = db.Column(db.String(50), index=True, 
-                         unique=True, required=True, min_length=6)
-    admin = db.Column(db.Boolean)
+    id = db.Column(db.Integer(), primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
 
-    def __repr__(self):
-        return '<User {}>'.format(self.email)
+    def __init__(self, email, password):
+        self.email = email
+        self.active = True
+        self.password = User.hash_password(password)
 
-    def hash_password(self):
-        self.password = generate_password_hash(self.password, method='sha256')
+
+    @staticmethod
+    def hash_password():
+        return generate_password_hash(password, method='sha256')
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    @staticmethod
+    def get_user_with_email_and_password(email, password):
+        user = User.query.filter_by(email=email).first()
+        if user and User.check_password(user, password):
+            return user
+        else:
+            return None
+
+    def __repr__(self):
+        return '<User {}>'.format(self.email)

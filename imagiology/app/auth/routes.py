@@ -1,47 +1,67 @@
 from flask import (
     request,
     jsonify,
+    url_for,
+    redirect,
+    g,
     make_response,
     current_app,
 )
 from flask_restful import Resource
-import uuid
-import jwt
+from sqlalchemy.exc import IntegrityError
+from app.utils import (
+    generate_token,
+    requires_auth,
+    verify_token,
+)
 import datetime
 
 from app import db
 from app.models import User
+from app.auth import bp
 
-class SignupApi(Resource):
-    def post(self):
-        body = request.get_json()
-        user = User(**body, unique_id=str(uuid.uuid4()), admin=False)
-        user.hash_password()
-        db.session.add(user)
+@bp.route('/create_user', methods=["POST"])
+def create_user():
+    body = request.get_json()
+    user = User(
+        email=body["email"],
+        password=body["password"],
+    )
+
+    db.session.add(user)
+    try:
         db.session.commit()
-        return jsonify({'message': 'registered successfully'})
+    except IntegrityError:
+        return jsonify(message="User with that email already exist"), 409
 
-class LoginApi(Resource):
-    def post(self):
-        auth_error = [
-            'could not verify',
-            401,
-            {'WWW.Authentication': 'Basic realm: "login required"'},
-        ],
+    new_user = User.query.filter_by(email=body["email"]).first()
+    return jsonify(
+        id=new_user.id,
+        token=generate_token(new_user),
+    )
 
-        auth = request.authorization
-        if not(auth and auth.email and auth.password):
-            return make_response(*auth_error)
+@bp.route("/user", methods=["GET"])
+@requires_auth
+def get_user():
+    return jsonify(data=g.current_user)
 
-        user = User.query.filter_by(email=body.email).first()
+@bp.route("/get_token", methods=["POST"])
+def get_token():
+    body = request.get_json()
+    user = User.get_user_with_email_and_password(body["email"], body["password"])
+    if user:
+        return jsonify(token=generate_token(user))
+    return jsonify(error=True), 403
 
-        if user.check_password(auth.password):
-            expiry = datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
-            token = jwt.encode({'unique_id': user.unique_id, 'exp' : expiry}, 
-                               current_app.config['SECRET_KEY'])
-            return jsonify({'token' : token.decode('UTF-8')})
+@bp.route("/is_token_valid", methods=["POST"])
+def is_token_valid():
+    body = request.get_json()
+    is_valid = verify_token(body["token"])
 
-        return make_response(*auth_error)
+    if is_valid:
+        return jsonify(is_token_valid=True)
+    else:
+        return jsonify(is_token_valid=False), 403
 
 
 

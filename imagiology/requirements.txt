@@ -2,7 +2,5 @@ Flask
 Flask-SQLAlchemy
 flask-migrate
 flask-restful
-datetime
-uuid
-PyJWT
+itsdangerous
 python-dotenv
