@@ -17,7 +17,7 @@ class User(db.Model):
 
 
     @staticmethod
-    def hash_password():
+    def hash_password(password):
         return generate_password_hash(password, method='sha256')
 
     def check_password(self, password):

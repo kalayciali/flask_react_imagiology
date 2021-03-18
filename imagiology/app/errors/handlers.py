@@ -25,10 +25,10 @@ def error_response(http_code, message=None):
 def not_found_error(error):
     return error_response(404, MESSAGE_404)
 
-@bp.app_errorhandler(500, MESSAGE_500)
+@bp.app_errorhandler(500)
 def internal_error(error):
     db.session.rollback()
-    return error_response(500)
+    return error_response(500, MESSAGE_500)
 
 @bp.app_errorhandler(413)
 def file_too_large(e):

@@ -3,7 +3,7 @@ import {
     apiGet,
 } from './index';
 
-BASE_URL = "/api/auth"
+const BASE_URL = "/api/auth"
 
 export function validateToken(token) {
     return apiPost(BASE_URL + '/is_token_valid', token)
@@ -14,7 +14,7 @@ export function getToken(userData) {
 }
 
 export function getUserInfo(token) {
-    return apiGet(BASE_URL + '/user', userData)
+    return apiGet(BASE_URL + '/user', token)
 }
 
 export function createUser(userData) {

@@ -1,9 +1,13 @@
 import { 
     take, 
     fork, 
-    cancel} 
+    cancel,
+    put,
+    call,
+} 
 from 'redux-saga/effects'
 import {push} from 'connected-react-router';
+import setAxiosAuthToken from "../../utils/setAxiosAuthToken.js";
 
 import * as signupActions from '../actions/signup';
 import * as api from '../api/auth.js';

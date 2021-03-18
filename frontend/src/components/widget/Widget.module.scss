@@ -1,0 +1,16 @@
+@import '../../styles/app.scss';
+
+.title {
+    margin-top: 0;
+    margin-bottom: 1.5rem / 2;
+    color: $header-color;
+}
+
+.head {
+    display: block;
+    position: relative;
+    margin-bottom: 30px;
+    padding: $header-padding-y $header-padding-x;
+    background: $header-bg;
+}
+

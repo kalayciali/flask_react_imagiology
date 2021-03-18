@@ -1,0 +1,64 @@
+$white: #fff !default;
+$gray-100: #f9f6f2;
+$gray-200: #efedea;
+$gray-300: #cccbca;
+$gray-400: #ccc;
+$gray-500: #666;
+$gray-600: #6c757d;
+$gray-700: #4d4d4d;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: #000 !default;
+
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem !default;
+$font-size-xlg: 1.5rem !default;
+$font-size-sm: 0.875rem !default;
+$font-size-small: 0.9rem;
+$font-family-base: 'Nunito', 'HelveticaNeue-Light', sans-serif;
+
+$line-height-computed: 1.5rem;
+
+$font-weight-thin: 300;
+$font-weight-normal: 400;
+$font-weight-semi-bold: 600;
+$font-weight-bold: 700;
+
+
+/* LAYOUT */
+
+$header-padding-y: 15px;
+$header-padding-x:  20px;
+$header-bg: #fff;
+$header-color: #444;
+
+$max-content-width: 1000px;
+$grid-float-breakpoint: 0;
+$body-bg: $gray-100;
+
+$content-padding-horizontal: 30px;
+$content-padding-vertical: 40px;
+
+$screen-xs-min: 480px;  /* Extra small screen / phone */
+$screen-sm-min: 768px;  /* Small screen / tablet */
+$screen-md-min: 992px;  /* Medium screen / desktop */
+$screen-lg-min: 1200px; /* Large screen / wide desktop */
+
+$navbar-bg-color: $white;
+$navbar-height:  75px !default;
+$navbar-border-radius: 0;
+$navbar-margin-bottom: -$navbar-height !default;
+$logo-gradient: #474d84;
+
+
+$footer-height: 20px;
+
+$sidebar-width-open: 200px;
+$sidebar-transition-time: 0.3s !default;
+$sidebar-collapsed-width: 6.5rem !default;
+
+$sidebar-bg-color: #474d84;
+$sidebar-color: rgba($white, 0.9) !default;
+
+$enable-rounded: false;
+

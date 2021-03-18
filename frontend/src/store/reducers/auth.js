@@ -38,8 +38,8 @@ const reducer = function loginReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 isAuthenticating: false,
                 isAuthenticated: true,
-                token: payload.token,
-                email: jwtDecode(payload.token).email,
+                token: action.payload.token,
+                email: jwtDecode(action.payload.token).email,
                 statusText: MESSAGES[LOGIN[SUCCESS]],
             })
 
@@ -84,6 +84,9 @@ const reducer = function loginReducer(state = initialState, action) {
                 email: null,
                 registerStatusText: MESSAGES[SIGNUP[FAILURE]] + action.payload.status,
             })
+
+        default:
+            return state
     }
 }
 
