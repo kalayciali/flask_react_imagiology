@@ -6,7 +6,7 @@ import {
     put, 
     cancelled 
 } from 'redux-saga/effects'
-import { browserHistory } from 'react-router';
+import {push} from 'connected-react-router';
 
 import setAxiosAuthToken from "../../utils/setAxiosAuthToken.js";
 import * as loginActions from '../actions/login';
@@ -25,7 +25,7 @@ function* loginFlow(userData) {
 
         // put token to global state
         yield put(loginActions.loginActions.success(tokenStr))
-        yield put(browserHistory.push('/main'))
+        yield put(push('/main'))
 
     } catch(error) {
         localStorage.removeItem('token')
@@ -35,7 +35,7 @@ function* loginFlow(userData) {
         // to prevent multiple clicks if i remember correctly
         if (yield cancelled()) {
             localStorage.removeItem('token')
-            yield put(browserHistory.push('/login'))
+            yield put(push('/login'))
         }
     }
 }
@@ -45,7 +45,7 @@ function* logoutFlow() {
     // delete token from headers
     setAxiosAuthToken()
     yield put(loginActions.logout())
-    yield put(browserHistory.push('/'))
+    yield put(push('/'))
 }
 
 function* loginWatcher() {

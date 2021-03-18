@@ -4,17 +4,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
-import {BrowserRouter} from 'react-router-dom';
-import {configureStore} from './store/configureStore';
+import { ConnectedRouter } from 'connected-react-router'
+
+import configureStore, {history} from './store/configureStore';
 
 const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
       <Provider store={store}>
-          <BrowserRouter>
+          <ConnectedRouter history={history}>
               <App></App>
-          </BrowserRouter>
+          </ConnectedRouter>
       </Provider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -4,7 +4,7 @@ import {
     fork, 
     put,
 } from 'redux-saga/effects';
-import { browserHistory } from 'react-router';
+import {push} from 'connected-react-router';
 
 import signupWatcher from './signup';
 import loginWatcher from './login';

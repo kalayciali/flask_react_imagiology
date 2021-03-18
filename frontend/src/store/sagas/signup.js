@@ -3,10 +3,10 @@ import {
     fork, 
     cancel} 
 from 'redux-saga/effects'
+import {push} from 'connected-react-router';
+
 import * as signupActions from '../actions/signup';
 import * as api from '../api/auth.js';
-import {fetchEntity} from './index';
-
 import {REQUEST} from '../actions/index';
 
 
@@ -19,7 +19,7 @@ function* signupFlow(userData) {
         localStorage.setItem('token', tokenStr)
 
         yield put(signupActions.signupActions.success(tokenStr))
-        yield put(browserHistory.push('/main'))
+        yield put(push('/main'))
 
     } catch(error) {
 
