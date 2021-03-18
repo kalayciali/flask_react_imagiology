@@ -22,7 +22,7 @@ from app.auth import bp
 
 @bp.route('/create_user', methods=["POST"])
 def create_user():
-    body = request.get_json()
+    body = request.get_json(force=True)
     user = User(
         email=body["email"],
         password=body["password"],
@@ -47,7 +47,7 @@ def get_user():
 
 @bp.route("/get_token", methods=["POST"])
 def get_token():
-    body = request.get_json()
+    body = request.get_json(force=True)
     user = User.get_user_with_email_and_password(body["email"], body["password"])
     if user:
         return jsonify(token=generate_token(user))
@@ -55,7 +55,7 @@ def get_token():
 
 @bp.route("/is_token_valid", methods=["POST"])
 def is_token_valid():
-    body = request.get_json()
+    body = request.get_json(force=True)
     is_valid = verify_token(body["token"])
 
     if is_valid:

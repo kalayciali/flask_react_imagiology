@@ -16,15 +16,15 @@ import {REQUEST, FAILURE} from '../actions/index';
 
 function* loginFlow(userData) {
     try {
-        const token = yield call(api.getToken, userData)
-        const {tokenStr} = token;
+        const payload = yield call(api.getToken, userData)
+        const {token} = payload;
 
         // put token to header
-        setAxiosAuthToken(tokenStr)
-        localStorage.setItem('token', tokenStr)
+        setAxiosAuthToken(token)
+        localStorage.setItem('token', token)
 
         // put token to global state
-        yield put(loginActions.loginActions.success(tokenStr))
+        yield put(loginActions.loginActions.success(token))
         yield put(push('/main'))
 
     } catch(error) {
@@ -51,7 +51,8 @@ function* logoutFlow() {
 function* loginWatcher() {
 
     while(true) {
-        const {userData}= yield take(loginActions.LOGIN[REQUEST])
+        const loginAction = yield take(loginActions.LOGIN[REQUEST])
+        const {userData} = loginAction.payload
         const task = yield fork(loginFlow, userData)
         // waiting for logout action or failure
         const action = yield take([loginActions.LOGIN[FAILURE], loginActions.LOGOUT])

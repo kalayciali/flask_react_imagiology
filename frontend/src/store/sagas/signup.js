@@ -16,13 +16,13 @@ import {REQUEST} from '../actions/index';
 
 function* signupFlow(userData) {
     try {
-        const token = yield call(api.createUser, userData)
-        const {tokenStr} = token;
+        const payload = yield call(api.createUser, userData)
+        const {token} = payload;
 
-        setAxiosAuthToken(tokenStr)
-        localStorage.setItem('token', tokenStr)
+        setAxiosAuthToken(token)
+        localStorage.setItem('token', token)
 
-        yield put(signupActions.signupActions.success(tokenStr))
+        yield put(signupActions.signupActions.success(token))
         yield put(push('/main'))
 
     } catch(error) {
@@ -42,7 +42,7 @@ function* signupWatcher() {
             yield cancel(lastTask)
         }
 
-        const {userData} = action
+        const {userData} = action.payload
         lastTask = yield fork(signupFlow, userData);
     }
 }
