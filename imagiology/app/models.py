@@ -8,6 +8,7 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
+    images = db.relationship('Image', backref='owner', lazy='dynamic')
 
     def __init__(self, email, password):
         self.email = email
@@ -32,3 +33,12 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
+
+class Image(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    internal_fname = db.Column(db.Integer())
+    fname = db.Column(db.String(300))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Image {}>'.format(self.internal_fname)
