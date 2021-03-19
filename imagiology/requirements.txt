@@ -2,5 +2,6 @@ Flask
 Flask-SQLAlchemy
 flask-migrate
 flask-restful
+flask-cors
 itsdangerous
 python-dotenv
